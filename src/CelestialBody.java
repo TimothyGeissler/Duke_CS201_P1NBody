@@ -23,9 +23,8 @@ public class CelestialBody {
 	 * @param mass of object
 	 * @param filename of image for object animation
 	 */
-
+	// Parametized constructor of CelestialBody object
 	public CelestialBody(double xp, double yp, double xv, double yv, double mass, String filename){
-		// Parametized constructor
 		this.myXPos = xp;
 		this.myYPos = yp;
 		this.myXVel = xv;
@@ -50,12 +49,15 @@ public class CelestialBody {
 		this.myFileName = b.myFileName;
 	}
 
+	// get x pos of object
 	public double getX() {
 		return this.myXPos;
 	}
+	// get y pos of object
 	public double getY() {
 		return this.myYPos;
 	}
+	// get x velocity of object
 	public double getXVel() {
 		return this.myXVel;
 	}
@@ -63,13 +65,15 @@ public class CelestialBody {
 	 * Return y-velocity of this Body.
 	 * @return value of y-velocity.
 	 */
+	// get y velocity of object
 	public double getYVel() {
 		return this.myYVel;
 	}
-	
+	// get mass of object
 	public double getMass() {
 		return this.myMass;
 	}
+
 	public String getName() {
 		return myFileName;
 	}
@@ -84,20 +88,40 @@ public class CelestialBody {
 		return Math.sqrt(Math.pow(this.myXPos - b.getX(), 2) + Math.pow(this.myYPos - b.getY(), 2));
 	}
 
+	/**
+	 * Calculate force exerted by another object on this one
+	 * @param b the other Celestial Body
+	 * @return force exerted
+	 */
 	public double calcForceExertedBy(CelestialBody b) {
 		// law of universal gravitation
 		return (6.67*Math.pow(10, -11)) * ((b.getMass() * this.getMass()) / Math.pow(this.calcDistance(b), 2));
 	}
 
+	/**
+	 * Calculate x value of force exerted by another object on this one
+	 * @param b the other Celestial Body
+	 * @return force exerted in x direction
+	 */
 	public double calcForceExertedByX(CelestialBody b) {
 		// Force formula
 		return calcForceExertedBy(b) * ((b.getX() - this.myXPos) / this.calcDistance(b));
 	}
+	/**
+	 * Calculate y value of force exerted by another object on this one
+	 * @param b the other Celestial Body
+	 * @return force exerted in y direction
+	 */
 	public double calcForceExertedByY(CelestialBody b) {
 		// Force formula
 		return calcForceExertedBy(b) * ((b.getY() - this.myYPos) / this.calcDistance(b));
 	}
 
+	/**
+	 * Calculate net forces exerted by all CelestialBodies in x direction
+	 * @param bodies all bodies to be considered
+	 * @return sum of forces in x direction acting on this object
+	 */
 	public double calcNetForceExertedByX(CelestialBody[] bodies) {
 		// Sums forces
 		double sum = 0.0;
@@ -109,6 +133,11 @@ public class CelestialBody {
 		return sum;
 	}
 
+	/**
+	 * Calculate net forces exerted by all CelestialBodies in y direction
+	 * @param bodies all bodies to be considered
+	 * @return sum of forces in y direction acting on this object
+	 */
 	public double calcNetForceExertedByY(CelestialBody[] bodies) {
 		//sums forces
 		double sum = 0.0;
@@ -120,6 +149,12 @@ public class CelestialBody {
 		return sum;
 	}
 
+	/**
+	 * Update this CelestialBody object with new data after calculating new position & velocity
+	 * @param deltaT change in time
+	 * @param xforce force applied in x direction
+	 * @param yforce force applied in y direction
+	 */
 	public void update(double deltaT, double xforce, double yforce) {
 		// updates this object with new data
 		double aX = xforce / this.myMass; //a = fx / m

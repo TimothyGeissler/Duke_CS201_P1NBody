@@ -43,6 +43,7 @@ public class  NBody {
 		for (int k = 0; k < nb; k++) {
 			String nextLine = s.nextLine(); //get next line
 			Scanner scanDelim = new Scanner(nextLine); //create scanner to split by spaces
+			System.out.println(nextLine);
 			double x = scanDelim.nextDouble();
 			double y = scanDelim.nextDouble();
 			double xv = scanDelim.nextDouble();
@@ -55,11 +56,12 @@ public class  NBody {
 		s.close(); //close scanner
 		return cBodyArray;
 	}
+
 	public static void main(String[] args) throws FileNotFoundException{
 		double totalTime = 39447000.0;
 		double dt = 25000.0;
 
-		String fname= "./data/planets.txt";
+		String fname= "data/kaleidoscope.txt";//"data/planets.txt";
 
 		if (args.length > 2) {
 			totalTime = Double.parseDouble(args[0]);
