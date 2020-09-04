@@ -18,13 +18,9 @@ public class  NBody {
 	 */
 	public static double readRadius(String fname) throws FileNotFoundException  {
 		Scanner s = new Scanner(new File(fname));
-	
-		// TODO: read values at beginning of file to
-		// find the radius
-
-		Scanner scan = new Scanner(new File(fname));
-		scan.nextInt();
-		double rad = scan.nextDouble();
+		//scan through file, get 1st data point (rad)
+		s.nextInt();
+		double rad = s.nextDouble();
 		s.close();
 		return rad;
 	}
@@ -39,32 +35,24 @@ public class  NBody {
 	public static CelestialBody[] readBodies(String fname) throws FileNotFoundException {
 
 		Scanner s = new Scanner(new File(fname));
-		// TODO: read # bodies, store in nb
+		//Scan file, # of bodies is 1st int
 		int nb = s.nextInt();          // # bodies to be read
+		s.nextLine(); //skip 2 lines
 		s.nextLine();
-		s.nextLine();
-		// TODO: Create array that can store nb CelestialBodies
-		CelestialBody [] cBodyArray = new CelestialBody[nb];
-		// TODO: read and ignore radius
+		CelestialBody [] cBodyArray = new CelestialBody[nb]; //array of CelestialBody objects
 		for (int k = 0; k < nb; k++) {
-			String nextLine = s.nextLine();
-			Scanner scanDelim = new Scanner(nextLine);
+			String nextLine = s.nextLine(); //get next line
+			Scanner scanDelim = new Scanner(nextLine); //create scanner to split by spaces
 			double x = scanDelim.nextDouble();
 			double y = scanDelim.nextDouble();
 			double xv = scanDelim.nextDouble();
 			double yv = scanDelim.nextDouble();
 			double m = scanDelim.nextDouble();
 			String name = scanDelim.next();
-			CelestialBody cb = new CelestialBody(x, y, xv, yv, m, name);
-			cBodyArray[k] = cb;
-			// TODO: read data for each body
-			// TODO: construct new body object and add to array
-
+			CelestialBody cb = new CelestialBody(x, y, xv, yv, m, name); //create new object
+			cBodyArray[k] = cb; //add to array
 		}
-
-		s.close();
-
-		// TODO: return array of body objects read
+		s.close(); //close scanner
 		return cBodyArray;
 	}
 	public static void main(String[] args) throws FileNotFoundException{
@@ -85,41 +73,32 @@ public class  NBody {
 		StdDraw.enableDoubleBuffering();
 		StdDraw.setScale(-radius, radius);
 		StdDraw.picture(0,0,"images/starfield.jpg");
-
-		// TODO: for music/sound, uncomment next line
-
+		//Audio:
 		//StdAudio.play("images/2001.wav");
 
 		// run simulation until over
 
 		for(double t = 0.0; t < totalTime; t += dt) {
-			
-			// TODO: create double arrays xforces and yforces
-			//       to hold forces on each body
+
+			//  arrays to hold forces on each body
 			double [] xforces = new double[bodies.length];
 			double [] yforces = new double[bodies.length];
-			// TODO: loop over all bodies
-			// TODO: calculates netForcesX and netForcesY and store in
-			//       arrays xforces and yforces
 
+			//loop of al bodies & calculate net forces on X & y, store in arrays
 			for(int k=0; k < bodies.length; k++) {
-				// code here
-				xforces[k] = bodies[k].calcNetForceExertedByX(bodies);
+				xforces[k] = bodies[k].calcNetForceExertedByX(bodies); //save net forces at corresponding index
 				yforces[k] = bodies[k].calcNetForceExertedByY(bodies);
   			}
 
-			// TODO: loop over all bodies and call update
-			//       with dt and corresponding xforces and yforces values
+			// Update all CelestialBody objects w/ new forces data
 			for(int k=0; k < bodies.length; k++){
-				// code here
 				bodies[k].update(dt, xforces[k], yforces[k]);
 			}
 
 			StdDraw.clear();
 			StdDraw.picture(0,0,"images/starfield.jpg");
 			
-			// TODO: loop over all bodies and call draw on each one
-
+			//Draw each CelestialBody on screen
 			for(CelestialBody b : bodies){
 				// code here
 				b.draw();

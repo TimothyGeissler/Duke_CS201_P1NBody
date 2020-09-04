@@ -25,7 +25,7 @@ public class CelestialBody {
 	 */
 
 	public CelestialBody(double xp, double yp, double xv, double yv, double mass, String filename){
-		// TODO: complete constructor
+		// Parametized constructor
 		this.myXPos = xp;
 		this.myYPos = yp;
 		this.myXVel = xv;
@@ -51,15 +51,12 @@ public class CelestialBody {
 	}
 
 	public double getX() {
-		// TODO: complete method
 		return this.myXPos;
 	}
 	public double getY() {
-		// TODO: complete method
 		return this.myYPos;
 	}
 	public double getXVel() {
-		// TODO: complete method
 		return this.myXVel;
 	}
 	/**
@@ -67,16 +64,13 @@ public class CelestialBody {
 	 * @return value of y-velocity.
 	 */
 	public double getYVel() {
-		// TODO: complete method
 		return this.myYVel;
 	}
 	
 	public double getMass() {
-		// TODO: complete method
 		return this.myMass;
 	}
 	public String getName() {
-		// TODO: complete method
 		return myFileName;
 	}
 
@@ -86,26 +80,26 @@ public class CelestialBody {
 	 * @return distance between this body and b
 	 */
 	public double calcDistance(CelestialBody b) {
-		// TODO: complete method
+		// Using pythag to zolve
 		return Math.sqrt(Math.pow(this.myXPos - b.getX(), 2) + Math.pow(this.myYPos - b.getY(), 2));
 	}
 
 	public double calcForceExertedBy(CelestialBody b) {
-		// TODO: complete method
+		// law of universal gravitation
 		return (6.67*Math.pow(10, -11)) * ((b.getMass() * this.getMass()) / Math.pow(this.calcDistance(b), 2));
 	}
 
 	public double calcForceExertedByX(CelestialBody b) {
-		// TODO: complete method
+		// Force formula
 		return calcForceExertedBy(b) * ((b.getX() - this.myXPos) / this.calcDistance(b));
 	}
 	public double calcForceExertedByY(CelestialBody b) {
-		// TODO: complete method
+		// Force formula
 		return calcForceExertedBy(b) * ((b.getY() - this.myYPos) / this.calcDistance(b));
 	}
 
 	public double calcNetForceExertedByX(CelestialBody[] bodies) {
-		// TODO: complete method
+		// Sums forces
 		double sum = 0.0;
 		for (CelestialBody b: bodies) {
 			if (!b.equals(this)) {
@@ -116,6 +110,7 @@ public class CelestialBody {
 	}
 
 	public double calcNetForceExertedByY(CelestialBody[] bodies) {
+		//sums forces
 		double sum = 0.0;
 		for (CelestialBody b: bodies) {
 			if (!b.equals(this)) {
@@ -126,16 +121,17 @@ public class CelestialBody {
 	}
 
 	public void update(double deltaT, double xforce, double yforce) {
-		// TODO: complete method
-		double aX = xforce / this.myMass;
-		double aY = yforce / this.myMass;
+		// updates this object with new data
+		double aX = xforce / this.myMass; //a = fx / m
+		double aY = yforce / this.myMass;// a = fy / m
 
-		double nvx = this.myXVel + deltaT * aX;
+		double nvx = this.myXVel + deltaT * aX; //v1 = v2 + dt * a
 		double nvy = this.myYVel + deltaT * aY;
 
-		double nx = this.myXPos + deltaT * nvx;
+		double nx = this.myXPos + deltaT * nvx; //x = x2 + dt * v1
 		double ny = this.myYPos + deltaT * nvy;
 
+		//update values
 		this.myXPos = nx;
 		this.myYPos = ny;
 		this.myXVel = nvx;
