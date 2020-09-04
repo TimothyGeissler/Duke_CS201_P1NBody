@@ -1,5 +1,5 @@
 /**
- * @author YOUR NAME THE STUDENT IN 201
+ * @author Timothy Geissler
  * 
  * Simulation program for the NBody assignment
  */
@@ -22,11 +22,10 @@ public class  NBody {
 		// TODO: read values at beginning of file to
 		// find the radius
 
-		double rad = 0.0;
-		
+		Scanner scan = new Scanner(new File(fname));
+		scan.nextInt();
+		double rad = scan.nextDouble();
 		s.close();
-		
-
 		return rad;
 	}
 	
@@ -40,16 +39,24 @@ public class  NBody {
 	public static CelestialBody[] readBodies(String fname) throws FileNotFoundException {
 
 		Scanner s = new Scanner(new File(fname));
-			
 		// TODO: read # bodies, store in nb
-
-		int nb = 0;          // # bodies to be read
-
+		int nb = s.nextInt();          // # bodies to be read
+		s.nextLine();
+		s.nextLine();
 		// TODO: Create array that can store nb CelestialBodies
+		CelestialBody [] cBodyArray = new CelestialBody[nb];
 		// TODO: read and ignore radius
-
-		for(int k=0; k < nb; k++) {
-
+		for (int k = 0; k < nb; k++) {
+			String nextLine = s.nextLine();
+			Scanner scanDelim = new Scanner(nextLine);
+			double x = scanDelim.nextDouble();
+			double y = scanDelim.nextDouble();
+			double xv = scanDelim.nextDouble();
+			double yv = scanDelim.nextDouble();
+			double m = scanDelim.nextDouble();
+			String name = scanDelim.next();
+			CelestialBody cb = new CelestialBody(x, y, xv, yv, m, name);
+			cBodyArray[k] = cb;
 			// TODO: read data for each body
 			// TODO: construct new body object and add to array
 
@@ -58,7 +65,7 @@ public class  NBody {
 		s.close();
 
 		// TODO: return array of body objects read
-		return null;
+		return cBodyArray;
 	}
 	public static void main(String[] args) throws FileNotFoundException{
 		double totalTime = 39447000.0;
@@ -89,20 +96,23 @@ public class  NBody {
 			
 			// TODO: create double arrays xforces and yforces
 			//       to hold forces on each body
-
-
+			double [] xforces = new double[bodies.length];
+			double [] yforces = new double[bodies.length];
 			// TODO: loop over all bodies
 			// TODO: calculates netForcesX and netForcesY and store in
 			//       arrays xforces and yforces
 
 			for(int k=0; k < bodies.length; k++) {
 				// code here
+				xforces[k] = bodies[k].calcNetForceExertedByX(bodies);
+				yforces[k] = bodies[k].calcNetForceExertedByY(bodies);
   			}
 
 			// TODO: loop over all bodies and call update
 			//       with dt and corresponding xforces and yforces values
 			for(int k=0; k < bodies.length; k++){
 				// code here
+				bodies[k].update(dt, xforces[k], yforces[k]);
 			}
 
 			StdDraw.clear();
@@ -112,6 +122,7 @@ public class  NBody {
 
 			for(CelestialBody b : bodies){
 				// code here
+				b.draw();
 			}
 			StdDraw.show();
 			StdDraw.pause(10);
